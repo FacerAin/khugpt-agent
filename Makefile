@@ -3,7 +3,7 @@ quality: set-style-dep check-quality
 style: set-style-dep set-style
 setup: set-precommit set-style-dep set-test-dep set-git set-dev
 test: set-test-dep set-test
-run: run-uvicorn
+run: set-dev run-uvicorn
 
 
 ##### basic #####
