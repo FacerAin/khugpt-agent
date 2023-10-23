@@ -1,8 +1,14 @@
 from fastapi import APIRouter
 
+from app.agent import ChatAgent
+from app.schemas.chat import ResponseAnswer, ReuqestQuery
+
 router = APIRouter()
 
+chat_agent = ChatAgent()
 
-@router.post("/completion")
-def make_chat():
-    return "api/v1/chat/completion"
+
+@router.post("/completion", response_model=ResponseAnswer)
+def make_chat(req: ReuqestQuery):
+    answer = chat_agent.run(req.query)
+    return {"answer": answer}

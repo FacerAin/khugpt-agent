@@ -1,7 +1,8 @@
 from langchain.prompts import PromptTemplate
 
-system_prompt_template = PromptTemplate.from_template(
-    """
+system_prompt_template = PromptTemplate(
+    input_variables=["current_date", "context", "question"],
+    template="""
 You are a helpful assistant for Kyung Hee University students.
 Use the following pieces of context to answer the question at the end.
 If you don't know the answer, just say that you don't know, don't try to make up an answer.
@@ -13,5 +14,5 @@ Context: {context}
 
 Question: {question}
 Helpful answer:
-"""
+""",
 )
