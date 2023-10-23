@@ -3,6 +3,7 @@ quality: set-style-dep check-quality
 style: set-style-dep set-style
 setup: set-precommit set-style-dep set-test-dep set-git set-dev
 test: set-test-dep set-test
+run: set-dev run-uvicorn
 
 
 ##### basic #####
@@ -47,3 +48,6 @@ clean-test:
 	rm -f .coverage.*
 	rm -rf .pytest_cache
 	rm -rf .mypy_cache
+
+run-uvicorn:
+	uvicorn app.main:app
