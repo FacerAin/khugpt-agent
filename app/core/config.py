@@ -19,6 +19,8 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str = "KHUGPT"
     OPENAI_API_KEY: str
+    PINECONE_API_KEY: str
+    PINECONE_ENVIRONMENT_REGION: str
 
     class Config:
         env_file = ".env"
