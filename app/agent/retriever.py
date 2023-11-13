@@ -12,7 +12,7 @@ from app.core.config import settings
 
 class Retriever(ABC):
     @abstractmethod
-    def similarity_search(self, query: str, top_k: int = 5, **kwargs: Any):
+    def similarity_search(self, query: str, top_k: int = 10, **kwargs: Any):
         """Return docs most similar to query."""
         raise NotImplementedError
 

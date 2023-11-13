@@ -1,4 +1,4 @@
-langchain==0.0.310
+langchain==0.0.333
 fastapi==0.103.0
 pinecone-client==2.2.4
 openai==0.28.1
