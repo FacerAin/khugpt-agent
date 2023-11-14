@@ -1,3 +1,9 @@
 langchain==0.0.310
 fastapi==0.103.0
+uvicorn==0.23.2
 pinecone-client==2.2.4
+pydantic-settings==2.0.3
+openai==0.28.1
+tiktoken==0.3.3
+pydantic==2.3.0
+python-dotenv==1.0.0
