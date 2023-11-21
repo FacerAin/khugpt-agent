@@ -11,7 +11,7 @@ from app.core.config import settings
 
 class ChatAgent:
     def __init__(self, index_name: str = "khugpt") -> None:
-        self.llm = ChatOpenAI(model_name="gpt-3.5-turbo-16k", temperature=0, openai_api_key=settings.OPENAI_API_KEY)
+        self.llm = ChatOpenAI(model_name="gpt-4-1106-preview", temperature=0, openai_api_key=settings.OPENAI_API_KEY)
         self.retreiver = PineconeRetriever(index_name=index_name)
 
     def run(self, query: str):
