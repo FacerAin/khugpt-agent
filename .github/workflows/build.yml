@@ -28,5 +28,5 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
           
       - name: Build Image
-        working-directory: python
+        working-directory: .
         run: docker buildx build --platform linux/amd64,linux/arm64 -t syw5141/khugpt-agent:${{ steps.vars.outputs.tag }} --push .
