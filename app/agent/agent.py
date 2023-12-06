@@ -1,13 +1,14 @@
 import datetime
 
-from langchain.agents import AgentExecutor, AgentType, LLMSingleActionAgent, Tool, initialize_agent
+from langchain.agents import AgentExecutor, LLMSingleActionAgent, OpenAIFunctionsAgent, Tool
 from langchain.cache import InMemoryCache
 from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI
 from langchain.globals import set_llm_cache
+from langchain_core.messages import SystemMessage
 
 from app.agent.parser import CustomAgentOutputParser
-from app.agent.prompts import AgentPromptTemplate, agent_prompt_template, retriever_prompt_template
+from app.agent.prompts import retriever_prompt_template, system_message
 from app.agent.retriever import PineconeRetriever
 from app.core.config import settings
 
@@ -32,18 +33,16 @@ class ExecutorAgent:
                 func=simple_meal_info,
                 description="If a user is looking for campus cafeterial menu information, use this information.",
             ),
+            Tool(
+                name="today_date",
+                func=get_today_date,
+                description="If you’re curious about today’s date, you can use this. It returns today’s date as a string in the format of YYYY-mm-dd.",
+            ),
         ]
-        self.agent_prompt = AgentPromptTemplate(
-            template=agent_prompt_template,
-            tools=self.tools,
-            input_variables=["input", "intermediate_steps"],
-        )
+
+        self.agent_prompt = OpenAIFunctionsAgent.create_prompt(system_message=SystemMessage(content=system_message))
         self.output_parser = CustomAgentOutputParser()
-        llm_chain = LLMChain(llm=self.llm, prompt=self.agent_prompt)
-        tool_names = [tool.name for tool in self.tools]
-        self.agent = LLMSingleActionAgent(
-            llm_chain=llm_chain, output_parser=self.output_parser, stop=["\nObservation:"], allowed_tools=tool_names
-        )
+        self.agent = OpenAIFunctionsAgent(llm=self.llm, tools=self.tools, prompt=self.agent_prompt)
 
         self.executor = AgentExecutor.from_agent_and_tools(
             agent=self.agent, tools=self.tools, verbose=True, max_iterations=2
@@ -60,6 +59,11 @@ If a user is looking for campus cafeterial menu information, use the link below.
 경희대학교 학생 식당: https://www.khu.ac.kr/kor/forum/list.do?type=RESTAURANT&category=INTL&page=1
 경희대학교 제 2기숙사 식당: https://dorm2.khu.ac.kr/40/4050.kmc
 """
+
+
+def get_today_date(query):
+    now = datetime.datetime.now()
+    return str(now.strftime("%Y-%m-%d"))
 
 
 class RetrieverAgent:
