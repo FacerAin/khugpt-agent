@@ -1,17 +1,16 @@
 from fastapi import APIRouter
 
-from app.agent import ChatAgent
+from app.agent import ExecutorAgent
 from app.agent.retriever import PineconeRetriever
 from app.schemas.chat import ResponseAnswer, ReuqestQuery
 
 router = APIRouter()
-
-chat_agent = ChatAgent()
+agent = ExecutorAgent()
 
 
 @router.post("/completion", response_model=ResponseAnswer)
 def make_chat(req: ReuqestQuery):
-    answer = chat_agent.run(req.query)
+    answer = agent.run(req.query)
     return {"answer": answer}
 
 
