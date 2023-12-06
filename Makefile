@@ -24,7 +24,7 @@ set-dev:
 	pip3 install -r requirements.txt
 
 set-test:
-	python3 -m pytest tests/
+	python3 -m pytest tests/ -m "not live"
 
 set-style:
 	black --config pyproject.toml .
