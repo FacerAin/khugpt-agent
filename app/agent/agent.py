@@ -1,13 +1,17 @@
 import datetime
 
 from langchain.agents import AgentExecutor, AgentType, LLMSingleActionAgent, Tool, initialize_agent
+from langchain.cache import InMemoryCache
 from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI
+from langchain.globals import set_llm_cache
 
 from app.agent.parser import CustomAgentOutputParser
 from app.agent.prompts import AgentPromptTemplate, agent_prompt_template, retriever_prompt_template
 from app.agent.retriever import PineconeRetriever
 from app.core.config import settings
+
+set_llm_cache(InMemoryCache())
 
 
 class ExecutorAgent:
