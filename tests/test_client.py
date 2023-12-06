@@ -6,6 +6,15 @@ from app.agent import ExecutorAgent
 from app.agent.retriever import PineconeRetriever
 from app.main import app
 
+
+class FakeRetriever(object):
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def get_relevant_doc_string(self, *args, **kwargs):
+        return "Hello"
+
+
 client = TestClient(app)
 
 
@@ -13,11 +22,8 @@ def test_completion(monkeypatch):
     def mockreturn(*args, **kwargs):
         return "Hello"
 
-    def mockinitreturn(*args, **kwargs):
-        return None
-
     monkeypatch.setattr(ExecutorAgent, "run", mockreturn)
-    monkeypatch.setattr(PineconeRetriever, "__init__", mockinitreturn)
+    monkeypatch.setattr("app.agent.retriever.PineconeRetriever", FakeRetriever)
 
     req_body = {"query": "Hi"}
     response = client.post("/api/v1/chat/completion", json=req_body)
