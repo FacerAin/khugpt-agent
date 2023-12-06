@@ -4,6 +4,7 @@ style: set-style-dep set-style
 setup: set-precommit set-style-dep set-test-dep set-git set-dev
 test: set-test-dep set-test
 run: set-dev run-uvicorn
+coverage: set-coverage
 
 
 ##### basic #####
@@ -51,3 +52,6 @@ clean-test:
 
 run-uvicorn:
 	uvicorn app.main:app
+
+set-coverage:
+	python3 -m pytest --cov-report term-missing --cov=app tests/ -m "not live"
