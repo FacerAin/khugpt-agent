@@ -32,9 +32,14 @@ jobs:
         run: docker buildx build --platform linux/amd64,linux/arm64 -t syw5141/khugpt-agent:${{ steps.vars.outputs.tag }} --push .
 
   deploy:
+    needs: build
     name: Deploy
     runs-on: ubuntu-latest
     steps:
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+
       - name: Deploy on rpi4 server using docker
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -42,7 +47,12 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          script: whoami
+          script: |
+            cd  ~/khugpt-agent-deploy
+            export KHUGPT_AGENT_IMAGE_TAG=${{ steps.vars.outputs.tag }}
+            docker-compose pull
+            docker-compose up --force-recreate --build -d
+            docker image prune -f
 
 
 
