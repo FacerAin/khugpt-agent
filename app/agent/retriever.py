@@ -51,12 +51,12 @@ class PineconeRetriever(Retriever):
         doc_string = DOCUMENT_SEPERATOR.join(docs)
         return doc_string
 
-    def similarity_search(self, query: str, top_k: int = 10, **kwargs: Any):
+    def similarity_search(self, query: str, top_k: int = 5, **kwargs: Any):
         embeddings = self._embedding_model.embed_query(query)
         responses = self._index.query([embeddings], top_k=top_k, include_metadata=True)
         return responses
 
-    def get_relevant_doc_string(self, query: str, top_k: int = 10):
+    def get_relevant_doc_string(self, query: str, top_k: int = 5):
         responses = self.similarity_search(query=query, top_k=top_k)
         doc_string = self._combine_documents(responses=responses["matches"])
         return doc_string
