@@ -10,6 +10,7 @@ from langchain_core.messages import SystemMessage
 from app.agent.parser import CustomAgentOutputParser
 from app.agent.prompts import retriever_prompt_template, system_message
 from app.agent.retriever import PineconeRetriever
+from app.agent.tools import get_meal_info, get_today_date
 from app.core.config import settings
 
 set_llm_cache(InMemoryCache())
@@ -30,7 +31,7 @@ class ExecutorAgent:
             ),
             Tool(
                 name="cafeterial_menu",
-                func=simple_meal_info,
+                func=get_meal_info,
                 description="If a user is looking for campus cafeterial menu information, use this information.",
             ),
             Tool(
@@ -51,19 +52,6 @@ class ExecutorAgent:
     def run(self, query):
         response = self.executor.run(query)
         return response
-
-
-def simple_meal_info(query):
-    return """
-If a user is looking for campus cafeterial menu information, use the link below. You should directly check the meal information from the link below.
-경희대학교 학생 식당: https://www.khu.ac.kr/kor/forum/list.do?type=RESTAURANT&category=INTL&page=1
-경희대학교 제 2기숙사 식당: https://dorm2.khu.ac.kr/40/4050.kmc
-"""
-
-
-def get_today_date(query):
-    now = datetime.datetime.now()
-    return str(now.strftime("%Y-%m-%d"))
 
 
 class RetrieverAgent:
