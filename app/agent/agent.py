@@ -38,9 +38,6 @@ class ExecutorAgent:
             tools=self.tools,
             input_variables=["input", "intermediate_steps"],
         )
-        self.agent = initialize_agent(
-            tools=self.tools, llm=self.llm, agent=AgentType.OPENAI_FUNCTIONS, verbose=True, max_iterations=3
-        )
         self.output_parser = CustomAgentOutputParser()
         llm_chain = LLMChain(llm=self.llm, prompt=self.agent_prompt)
         tool_names = [tool.name for tool in self.tools]
@@ -54,7 +51,6 @@ class ExecutorAgent:
 
     def run(self, query):
         response = self.executor.run(query)
-        print(response)
         return response
 
 
