@@ -1,3 +1,4 @@
+import pinecone
 import pytest
 from fastapi.testclient import TestClient
 
@@ -25,6 +26,8 @@ def test_similarity_search(monkeypatch):
         return "Hello"
 
     monkeypatch.setattr(PineconeRetriever, "get_relevant_doc_string", mockreturn)
+    monkeypatch.setattr(pinecone, "init", mockreturn)
+
     response = client.get("/api/v1/chat/similarity-search?query=Hi")
     assert response.status_code == 200
     assert isinstance(response.text, str)
