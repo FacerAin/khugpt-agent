@@ -10,7 +10,7 @@ client = TestClient(app)
 
 
 def test_completion(monkeypatch):
-    def mockreturn(a, b):
+    def mockreturn(*args, **kwargs):
         return "Hello"
 
     monkeypatch.setattr(ExecutorAgent, "run", mockreturn)
@@ -22,10 +22,11 @@ def test_completion(monkeypatch):
 
 
 def test_similarity_search(monkeypatch):
-    def mockreturn(a, b):
+    def mockreturn(*args, **kwargs):
         return "Hello"
 
     monkeypatch.setattr(PineconeRetriever, "get_relevant_doc_string", mockreturn)
+    monkeypatch.setattr(PineconeRetriever, "get_pinecone_index", mockreturn)
     monkeypatch.setattr(pinecone, "init", mockreturn)
 
     response = client.get("/api/v1/chat/similarity-search?query=Hi")
