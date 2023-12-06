@@ -3,6 +3,11 @@ from typing import List
 from langchain.agents import Tool
 from langchain.prompts import PromptTemplate, StringPromptTemplate
 
+system_message = """You are a helpful assistant for Kyung Hee University students.
+Answer the following questions as best you can. If a page_url is provided in the document, please also provide a link to the related page.
+Remember to speak in a korean when giving your final answer.
+"""
+
 agent_prompt_template = """You are a helpful assistant for Kyung Hee University students.
 Answer the following questions as best you can. If a page_url is provided in the document, please also provide a link to the related page.
 You have access to the following tools:
