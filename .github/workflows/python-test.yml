@@ -26,6 +26,11 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
+      - name: Make envs for testing
+        run: |
+          echo "PINECONE_API_KEY=${{secrets.PINECONE_API_KEY}}" >> .env
+          echo "PINECONE_ENVIRONMENT_REGION=${{secrets.PINECONE_ENVIRONMENT_REGION}}" >> .env
+
       - name: Test code (pytest)
         run: |
           make test
