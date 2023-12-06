@@ -18,13 +18,12 @@ class Retriever(ABC):
 
 
 class PineconeRetriever(Retriever):
-    pinecone.init(api_key=settings.PINECONE_API_KEY, environment=settings.PINECONE_ENVIRONMENT_REGION)
-
     def __init__(
         self,
         index_name: str,
         embedding_model: Union[Embeddings, Callable] = OpenAIEmbeddings(openai_api_key=settings.OPENAI_API_KEY),
     ):
+        pinecone.init(api_key=settings.PINECONE_API_KEY, environment=settings.PINECONE_ENVIRONMENT_REGION)
         self._index = self.get_pinecone_index(index_name=index_name)
         self._embedding_model = embedding_model
 

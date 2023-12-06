@@ -13,7 +13,12 @@ def test_completion(monkeypatch):
     def mockreturn(*args, **kwargs):
         return "Hello"
 
+    def mockinitreturn(*args, **kwargs):
+        return None
+
     monkeypatch.setattr(ExecutorAgent, "run", mockreturn)
+    monkeypatch.setattr(PineconeRetriever, "__init__", mockinitreturn)
+
     req_body = {"query": "Hi"}
     response = client.post("/api/v1/chat/completion", json=req_body)
     assert response.status_code == 200
