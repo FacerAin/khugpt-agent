@@ -8,7 +8,7 @@ from langchain.globals import set_llm_cache
 from langchain_core.messages import SystemMessage
 
 from app.agent.parser import CustomAgentOutputParser
-from app.agent.prompts import retriever_prompt_template, system_message
+from app.agent.prompts import AgentPromptTemplate, agent_prompt_template, retriever_prompt_template
 from app.agent.retriever import PineconeRetriever
 from app.agent.tools import get_meal_info, get_today_date
 from app.core.config import settings
@@ -41,12 +41,20 @@ class ExecutorAgent:
             ),
         ]
 
-        self.agent_prompt = OpenAIFunctionsAgent.create_prompt(system_message=SystemMessage(content=system_message))
+        self.agent_prompt = AgentPromptTemplate(
+            template=agent_prompt_template,
+            tools=self.tools,
+            input_variables=["input", "intermediate_steps"],
+        )
         self.output_parser = CustomAgentOutputParser()
-        self.agent = OpenAIFunctionsAgent(llm=self.llm, tools=self.tools, prompt=self.agent_prompt)
+        llm_chain = LLMChain(llm=self.llm, prompt=self.agent_prompt)
+        tool_names = [tool.name for tool in self.tools]
+        self.agent = LLMSingleActionAgent(
+            llm_chain=llm_chain, output_parser=self.output_parser, stop=["\nObservation:"], allowed_tools=tool_names
+        )
 
         self.executor = AgentExecutor.from_agent_and_tools(
-            agent=self.agent, tools=self.tools, verbose=True, max_iterations=2
+            agent=self.agent, tools=self.tools, verbose=True, max_iterations=5
         )
 
     def run(self, query):
