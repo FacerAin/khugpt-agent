@@ -56,6 +56,10 @@ I recommend building your environment on top of a **virtual environment** (e.g.,
 * **Run application**
   
   ```sh
+  make run
+
+  or
+
   uvicorn app.main:app
   ```
 * **Linting & Testing**
@@ -81,8 +85,9 @@ I recommend building your environment on top of a **virtual environment** (e.g.,
 
 
 ## :globe_with_meridians: Features
-- **Summarize and quiz** lecture notes or videos.
-- You can input text, PDF, or video.
+- Providing API Endpoint through FastAPI
+- Generating answers using the Agent system
+- Document search and RAG using Pinecone Retriever
 - For more information, please refer to the [API documentation](http://facerain-dev.iptime.org:1009/redoc).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
