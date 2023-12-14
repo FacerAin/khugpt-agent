@@ -1,4 +1,4 @@
-## KHUMON Education contributing guide
+## KHUGPT contributing guide
 Thank you for your interest in contributing to our project! This guide will provide you with an overview of the contribution workflow, from opening an issue to creating a pull request (PR), reviewing, and merging the PR.
 
 ## Guide for New Contributors
